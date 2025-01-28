@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "752923375868",
+    "project_id": "instaflurt3",
+    "storage_bucket": "instaflurt3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:752923375868:android:07f280c8c3886aedd7ff79",
+        "android_client_info": {
+          "package_name": "com.example.instaflurt3"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "752923375868-skqobej8a3vug0jf02vhmeoj0l793ikg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.instaflurt3",
+            "certificate_hash": "450933185c6b0b37a649a750b7147442c90cad5f"
+          }
+        },
+        {
+          "client_id": "752923375868-kc9nb5ok3dc73i18fuk28d6oeal5t6kg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtSIvuLaOpxLcq3S0MlI3a8UG0n0XIM2k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "752923375868-kc9nb5ok3dc73i18fuk28d6oeal5t6kg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
