@@ -1,10 +1,14 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instaflurt3/firebase_resources/authentication.dart';
+// import 'package:instaflurt3/responsive/mobilescreen.dart';
+// import 'package:instaflurt3/responsive/responsive_layout.dart';
+// import 'package:instaflurt3/responsive/webscreen.dart';
+import 'package:instaflurt3/screens/login_screen.dart';
 import 'package:instaflurt3/utils/colors.dart';
+// import 'package:instaflurt3/utils/global_variables.dart';
 import 'package:instaflurt3/utils/utils.dart';
 import 'package:instaflurt3/widgets/textfield_input.dart';
 
@@ -46,7 +50,12 @@ class _SignupscreenState extends State<Signupscreen> {
     setState(() {
       _isloading = true;
     });
-
+    if (_image == null) {
+      setState(() {
+        _isloading = false; 
+      });
+      return showSnackBar('Please select an image', context);
+    }
     String result = await Authentication().signupUser(
       email: _emailController.text,
       password: _passwordController.text,
@@ -54,17 +63,26 @@ class _SignupscreenState extends State<Signupscreen> {
       bio: _bioController.text,
       image: _image!,
     );
-    setState(() {
-      _isloading = false;
-    });
-    if (result != 'Signup successful') {
-      showSnackBar(result, context);
+
+    if (result == 'Signup successful') {
+      setState(() {
+        _isloading = false;
+      });
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => LoginScreen()));
     } else {
       showSnackBar(result, context);
-      _isloading = false;
-      
+      setState(() {
+        _isloading = false;
+      });
     }
     print(result);
+  }
+
+// funtion to navigate to login page
+  void navigateToLogin() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => LoginScreen()));
   }
 
   @override
@@ -82,15 +100,7 @@ class _SignupscreenState extends State<Signupscreen> {
               children: [
                 const SizedBox(height: 20),
                 // Logo
-                Text(
-                  'InstaFlurt',
-                  style: GoogleFonts.robotoSlab(
-                    fontSize: 50,
-                    fontStyle: FontStyle.italic,
-                    color: const Color.fromARGB(255, 255, 255, 255),
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                  instIcon,//InstFlurt icon
                 const SizedBox(height: 20),
                 // Profile Picture with Icon
                 Stack(
@@ -182,10 +192,9 @@ class _SignupscreenState extends State<Signupscreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text("Already have an account?"),
+                    //for signup
                     GestureDetector(
-                      onTap: () {
-                        // Pending functionality
-                      },
+                      onTap: navigateToLogin,
                       child: const Text(
                         "LogIn.",
                         style: TextStyle(fontWeight: FontWeight.bold),

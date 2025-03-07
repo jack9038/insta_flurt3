@@ -10,7 +10,8 @@ plugins {
 
 android {
     namespace = "com.example.instaflurt3"
-    compileSdk = flutter.compileSdkVersion
+
+    compileSdk = 34
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -51,8 +52,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore'
     
     // Add the providerinstaller dependency
-    implementation 'com.google.android.gms:play-services-base:18.0.1' // Ensure to use the latest version
+    implementation 'com.google.android.gms:play-services-base:18.5.0' // Ensure to use the latest version
     implementation 'com.google.android.gms:play-services-basement:18.5.0'
-    implementation("com.google.firebase:firebase-appcheck-playintegrity")
+   
 
 }
