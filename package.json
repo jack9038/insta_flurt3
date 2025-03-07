@@ -2,4 +2,10 @@
   "dependencies": {
     "firebase": "^11.2.0"
   }
+  
+}
+{
+  "scripts": {
+    "build": "flutter build"
+  }
 }
