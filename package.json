@@ -21,5 +21,12 @@
   "bugs": {
     "url": "https://github.com/jack9038/insta_flurt3/issues"
   },
-  "homepage": "https://github.com/jack9038/insta_flurt3#readme"
+  "homepage": "https://github.com/jack9038/insta_flurt3#readme",
+
+  "scripts": {
+  "start": "node index.js",
+  "build": "tsc",
+  "test": "jest"
+}
+
 }
