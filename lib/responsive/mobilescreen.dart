@@ -2,10 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:instaflurt3/utils/global_variables.dart';
 import 'package:instaflurt3/utils/colors.dart';
-import 'package:instaflurt3/utils/global_variables.dart';
 
 class MobileScreenLayout extends StatefulWidget {
-  const MobileScreenLayout({Key? key}) : super(key: key);
+  const MobileScreenLayout({super.key});
 
   @override
   State<MobileScreenLayout> createState() => _MobileScreenLayoutState();

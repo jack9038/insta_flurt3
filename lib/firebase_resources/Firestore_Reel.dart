@@ -20,6 +20,7 @@ class FirestoreReel {
           .uploadVideoToStorage('Reel_Video', reelVideo, true);
 
       String reelId = const Uuid().v1();
+
       Reels reel = Reels(
         description: description,
         profilePic: profilePic,
@@ -30,9 +31,8 @@ class FirestoreReel {
         reelUrl: videoUrl,
         datePublished: DateTime.now(),
       );
-      await _firestoreReels.collection('Reels').doc(reelId).set(
-            reel.toJson(),
-          );
+      await _firestoreReels.collection('Reels').doc(reelId).set(reel.toJson());
+
       res = "success";
     } catch (e) {
       print(e.toString());

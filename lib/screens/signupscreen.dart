@@ -8,6 +8,7 @@ import 'package:instaflurt3/firebase_resources/authentication.dart';
 // import 'package:instaflurt3/responsive/webscreen.dart';
 import 'package:instaflurt3/screens/login_screen.dart';
 import 'package:instaflurt3/utils/colors.dart';
+import 'package:instaflurt3/utils/global_variables.dart';
 // import 'package:instaflurt3/utils/global_variables.dart';
 import 'package:instaflurt3/utils/utils.dart';
 import 'package:instaflurt3/widgets/textfield_input.dart';
@@ -22,10 +23,11 @@ class Signupscreen extends StatefulWidget {
 class _SignupscreenState extends State<Signupscreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  // final TextEditingController _confirmpasswordController = TextEditingController();
+  final TextEditingController _confirmpasswordController =
+      TextEditingController();
   final TextEditingController _bioController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
-  // final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   Uint8List? _image;
   bool _isloading = false;
 
@@ -36,7 +38,7 @@ class _SignupscreenState extends State<Signupscreen> {
     _passwordController.dispose();
     _bioController.dispose();
     _usernameController.dispose();
-    // _confirmpasswordController.dispose();
+    _confirmpasswordController.dispose();
   }
 
   void selectImage() async {
@@ -46,16 +48,35 @@ class _SignupscreenState extends State<Signupscreen> {
     });
   }
 
+  void _checkPasswordsMatch() {
+    if (_passwordController.text != _confirmpasswordController.text) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Passwords do not match'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } else {}
+  }
+
   Future<void> signupUser() async {
     setState(() {
       _isloading = true;
     });
     if (_image == null) {
       setState(() {
-        _isloading = false; 
+        _isloading = false;
       });
       return showSnackBar('Please select an image', context);
     }
+    _checkPasswordsMatch(); //check if the password match
+    if (_passwordController.text != _confirmpasswordController.text) {
+      setState(() {
+        _isloading = false;
+      });
+      return; // Stop the signup process
+    }
+
     String result = await Authentication().signupUser(
       email: _emailController.text,
       password: _passwordController.text,
@@ -63,18 +84,15 @@ class _SignupscreenState extends State<Signupscreen> {
       bio: _bioController.text,
       image: _image!,
     );
+    setState(() {
+      _isloading = false;
+    });
 
     if (result == 'Signup successful') {
-      setState(() {
-        _isloading = false;
-      });
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => LoginScreen()));
     } else {
       showSnackBar(result, context);
-      setState(() {
-        _isloading = false;
-      });
     }
     print(result);
   }
@@ -87,12 +105,15 @@ class _SignupscreenState extends State<Signupscreen> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     return Scaffold(
       resizeToAvoidBottomInset: true, // Allow resizing when keyboard appears
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 32),
+            padding: width > webScreenSize
+                ? EdgeInsets.symmetric(horizontal: width / 3)
+                : const EdgeInsets.symmetric(horizontal: 32),
             width: double.infinity,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -100,7 +121,7 @@ class _SignupscreenState extends State<Signupscreen> {
               children: [
                 const SizedBox(height: 20),
                 // Logo
-                  instIcon,//InstFlurt icon
+                instIcon, //InstFlurt icon
                 const SizedBox(height: 20),
                 // Profile Picture with Icon
                 Stack(
@@ -130,12 +151,6 @@ class _SignupscreenState extends State<Signupscreen> {
                 // Text Fields
 
                 TextfieldInput(
-                  hinttext: 'Enter your Email',
-                  textEditingController: _emailController,
-                  textinputtype: TextInputType.emailAddress,
-                ),
-                const SizedBox(height: 20),
-                TextfieldInput(
                   hinttext: 'Enter your User name',
                   textEditingController: _usernameController,
                   textinputtype: TextInputType.text,
@@ -148,21 +163,24 @@ class _SignupscreenState extends State<Signupscreen> {
                 ),
                 const SizedBox(height: 20),
                 TextfieldInput(
-                  // key: _formKey,
-                  hinttext: 'Enter your Password',
+                  hinttext: 'Enter your Email',
+                  textEditingController: _emailController,
+                  textinputtype: TextInputType.emailAddress,
+                ),
+                const SizedBox(height: 20),
+                TextfieldInput(
+                  hinttext: 'create your Password',
                   textEditingController: _passwordController,
                   textinputtype: TextInputType.visiblePassword,
+                ),
+                const SizedBox(height: 20),
+                TextfieldInput(
+                  hinttext: 'confirm your Password',
+                  textEditingController: _confirmpasswordController,
+                  textinputtype: TextInputType.text,
                   ispassword: true,
                 ),
                 const SizedBox(height: 20),
-                // TextfieldInput(
-                //   // key: _formKey,
-                //   hinttext: 'confirm your Password',
-                //   textEditingController: _confirmpasswordController,
-                //   textinputtype: TextInputType.visiblePassword,
-                //   ispassword: true,
-                // ),
-                // const SizedBox(height: 20),
                 // SignUp Button
                 InkWell(
                   onTap: signupUser,

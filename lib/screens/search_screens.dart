@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:instaflurt3/screens/feed_screen.dart';
 import 'package:instaflurt3/screens/profile_screen.dart';
 import 'package:instaflurt3/utils/colors.dart';
-import 'package:instaflurt3/widgets/post_card.dart'; // Import PostCard
+import 'package:instaflurt3/utils/global_variables.dart';
+import 'package:instaflurt3/widgets/post_card.dart';
+// Import PostCard
 
 class SearchScreens extends StatefulWidget {
   const SearchScreens({super.key});
@@ -78,15 +81,23 @@ class _SearchScreensState extends State<SearchScreens> {
                           ),
                         ),
                       ),
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          backgroundImage: NetworkImage(
-                            photoUrl != null ? userData['photoUrl'] : ' ',
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => ProfileScreen(
+                                  uid: (snapshot.data! as dynamic).docs[index]
+                                      ['uid'])));
+                        },
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            backgroundImage: NetworkImage(
+                              photoUrl != null ? userData['photoUrl'] : ' ',
+                            ),
+                            radius: 16,
                           ),
-                          radius: 16,
-                        ),
-                        title: Text(
-                          (snapshot.data! as dynamic).docs[index]['username'],
+                          title: Text(
+                            (snapshot.data! as dynamic).docs[index]['username'],
+                          ),
                         ),
                       ),
                     );
@@ -111,12 +122,20 @@ class _SearchScreensState extends State<SearchScreens> {
                   );
                 }
                 return GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisSpacing: 5,
-                    crossAxisCount: 2, // Changed to 3 for a better look
-                    mainAxisSpacing: 5,
-                    childAspectRatio: 1,
-                  ),
+                  gridDelegate: MediaQuery.of(context).size.width >
+                          webScreenSize
+                      ? SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 4,
+                          crossAxisSpacing: 5,
+                          mainAxisSpacing: 5,
+                          childAspectRatio: 1,
+                        )
+                      : SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisSpacing: 5,
+                          crossAxisCount: 2, // Changed to 3 for a better look
+                          mainAxisSpacing: 5,
+                          childAspectRatio: 1,
+                        ),
                   itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index) {
                     final post = snapshot.data!.docs[index].data();
@@ -126,11 +145,30 @@ class _SearchScreensState extends State<SearchScreens> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => Scaffold(
-                              appBar: AppBar(
-                                title: const Text("Post Detail"),
-                              ),
-                              body: PostCard(snap: post),
-                            ),
+                                appBar: AppBar(
+                                  title: Text('Post details'),
+                                ),
+                                body: SafeArea(
+                                  child: SingleChildScrollView(
+                                    child: Container(
+                                        padding: MediaQuery.of(context)
+                                                    .size
+                                                    .width >
+                                                webScreenSize
+                                            ? EdgeInsets.symmetric(
+                                                horizontal: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    3,
+                                                vertical: MediaQuery.of(context)
+                                                        .size
+                                                        .height /
+                                                    950,
+                                              )
+                                            : null,
+                                        child: PostCard(snap: post)),
+                                  ),
+                                )),
                           ),
                         );
                       },

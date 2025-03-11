@@ -8,6 +8,7 @@ import 'package:instaflurt3/responsive/webscreen.dart';
 import 'package:instaflurt3/screens/signupscreen.dart';
 // import 'package:instaflurt3/screens/signupscreen.dart';
 import 'package:instaflurt3/utils/colors.dart';
+import 'package:instaflurt3/utils/global_variables.dart';
 import 'package:instaflurt3/utils/utils.dart';
 import 'package:instaflurt3/widgets/textfield_input.dart';
 
@@ -51,7 +52,15 @@ class _LoginScreenState extends State<LoginScreen> {
     } else if (_emailController.text.isEmpty &&
         _passwordController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('please provide both Input Field'),
+        content: Text('please provide Email and Password Field'),
+      ));
+    } else if (_emailController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('please provide Email Input Field'),
+      ));
+    } else if (_passwordController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('please provide Password Field'),
       ));
     } else {
       ScaffoldMessenger.of(context)
@@ -81,7 +90,10 @@ class _LoginScreenState extends State<LoginScreen> {
         body: SafeArea(
           child: SingleChildScrollView(
               child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 32),
+            padding: MediaQuery.of(context).size.width > webScreenSize
+                ? EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width / 3)
+                : const EdgeInsets.symmetric(horizontal: 32),
             width: double.infinity,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,

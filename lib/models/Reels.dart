@@ -10,6 +10,7 @@ class Reels {
   final String profilePic;
   final likes;
 
+
   const Reels({
     required this.username,
     required this.uid,
@@ -19,6 +20,7 @@ class Reels {
     required this.likes,
     required this.reelId,
     required this.reelUrl,
+  
   });
 
   static Reels fromSnap(DocumentSnapshot snap) {
@@ -33,6 +35,7 @@ class Reels {
       likes: snapshot["likes"],
       profilePic: snapshot["profilePic"],
       datePublished: snapshot["DatePublished"],
+    
     );
   }
 
@@ -45,5 +48,6 @@ class Reels {
         "likes": likes,
         "profilePic": profilePic,
         "datePublished": datePublished,
+  
       };
 }

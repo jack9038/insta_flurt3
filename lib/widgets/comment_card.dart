@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:instaflurt3/firebase_resources/firestore_post.dart';
 import 'package:instaflurt3/provider/user_provider.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -35,7 +36,9 @@ class _CommentCardState extends State<CommentCard> {
                       children: [
                         TextSpan(
                             text: widget.snap['name'],
-                            style: TextStyle(fontWeight: FontWeight.bold)),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white)),
                       ],
                     ),
                   ),
@@ -46,6 +49,7 @@ class _CommentCardState extends State<CommentCard> {
                         children: [
                           TextSpan(
                             text: widget.snap['text'],
+                            style: TextStyle(color: Colors.white),
                           ),
                         ],
                       ),
@@ -66,7 +70,18 @@ class _CommentCardState extends State<CommentCard> {
           Container(
             padding: EdgeInsets.all(8),
             child: IconButton(
-                onPressed: () async {}, icon: Icon(Icons.favorite_border)),
+                onPressed: () async {
+                  await FirestorePost().LikeComment(
+                    widget.snap['postId'],
+                    widget.snap['commentId'],
+                    user!.uid,
+                    widget.snap['likes'],
+                  );
+                  setState(() {
+                    
+                  });
+                },
+                icon: Icon(Icons.favorite_border)),
           )
         ],
       ),

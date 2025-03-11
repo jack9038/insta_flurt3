@@ -10,6 +10,8 @@ class Post {
   final String profilePic;
   final likes;
 
+
+
   const Post({
     required this.username,
     required this.uid,
@@ -18,7 +20,8 @@ class Post {
     required this.profilePic,
     required this.likes,
     required this.postId,
-    required this.postUrl,
+    required this.postUrl, 
+
   });
 
   static Post fromSnap(DocumentSnapshot snap) {
@@ -33,6 +36,7 @@ class Post {
       likes: snapshot["likes"],
       profilePic: snapshot["profilePic"],
       datePublished: snapshot["DatePublished"],
+    
     );
   }
 
@@ -45,5 +49,6 @@ class Post {
         "likes": likes,
         "profilePic": profilePic,
         "datePublished": datePublished,
+      
       };
 }

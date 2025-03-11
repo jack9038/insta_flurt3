@@ -13,6 +13,7 @@ class UserProvider with ChangeNotifier {
     _user = user;
     notifyListeners();
   }
+
   Future<void> fetchUserData() async {
     try {
       // Fetch user from Firestore or Auth
@@ -23,4 +24,3 @@ class UserProvider with ChangeNotifier {
     }
   }
 }
-

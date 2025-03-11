@@ -10,7 +10,6 @@ import 'package:instaflurt3/responsive/webscreen.dart';
 import 'package:instaflurt3/screens/login_screen.dart';
 import 'package:instaflurt3/utils/colors.dart';
 import 'package:provider/provider.dart';
-import 'package:no_screenshot/no_screenshot.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,8 +19,7 @@ void main() async {
   } else {
     await Firebase.initializeApp(options: DefaultFirebaseOptions.android);
   }
-  final userProvider = UserProvider();
-  await userProvider.fetchUserData();
+
   runApp(const MyApp());
 }
 

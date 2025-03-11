@@ -1,0 +1,36 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Allow read access to the 'users' collection
+    // if the user is authenticated.
+    match /users/{userId} {
+      allow read, write: if request.auth != null; // Allow authenticated users to read any user's profile
+      allow create, update : if request.auth != null; //Only the user can create or update his profile
+    }
+
+
+    // Allow read access to the 'posts' collection to everyone
+    match /posts/{postId} {
+      allow read: if true; // everyone can see the posts
+      allow delete : if request.auth != null && request.auth.uid == resource.id.userId; // only the owner of the post can update or delete it.
+      allow create : if request.auth != null;
+      allow write: if request.auth != null;
+    }
+
+      match /posts/{postId}/comments/{commentId}{
+      	allow read; // only authenticated user can see or create a comment.
+        allow delete,write, create: if request.auth != null;//only the user who posted the comment can delete it.
+       
+    }
+      match /Reels/{reelId} {
+      allow read: if true; // everyone can see the posts
+      allow update,delete : if request.auth != null && request.auth.uid == resource.auth.uid; // only the owner of the post can update or delete it.
+      allow create : if request.auth != null;
+    }
+  }
+}
+
+
+
+

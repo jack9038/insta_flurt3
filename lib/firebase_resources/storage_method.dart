@@ -15,19 +15,32 @@ class StorageMethod {
 
   Future<String> uploadImageToStorage(
       String childname, Uint8List file, bool isPost) async {
-    Reference ref =
-        _storage.ref().child(childname).child(_auth.currentUser!.uid);
+    try {
+      Reference ref =
+          _storage.ref().child(childname).child(_auth.currentUser!.uid);
 
-    if (isPost) {
-      String id = const Uuid().v1();
-      ref = ref.child(id);
+      if (isPost) {
+        String id = const Uuid().v1();
+        ref = ref.child(id);
+      }
+      UploadTask uploadTask = ref.putData(file);
+
+      TaskSnapshot snap = await uploadTask;
+      String downloadurl = await snap.ref.getDownloadURL();
+
+      return downloadurl;
+    } on FirebaseException catch (e) {
+      // Handle specific Firebase Storage exceptions
+      print("Firebase Storage Error: ${e.code} - ${e.message}");
+      // Depending on the error, you might want to retry, show an error message, etc.
+      if (e.code == 'canceled') {
+        return 'Upload cancelled by the user or the system.';
+      }
+      return 'Error uploading to storage: $e'; // Return a more specific error message
+    } catch (e) {
+      print("Generic Storage Error: $e");
+      return "An unexpected error occurred during upload.";
     }
-    UploadTask uploadTask = ref.putData(file);
-
-    TaskSnapshot snap = await uploadTask;
-    String downloadurl = await snap.ref.getDownloadURL();
-
-    return downloadurl;
   }
 
   Future<String> uploadVideoToStorage(
