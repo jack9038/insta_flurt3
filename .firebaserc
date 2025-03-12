@@ -1,5 +1,15 @@
 {
   "projects": {
     "default": "instaflurt3"
-  }
+  },
+  "targets": {
+    "instaflurt3": {
+      "hosting": {
+        "https://instaflurt3.web.app": [
+          "Instaflurt3"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }
